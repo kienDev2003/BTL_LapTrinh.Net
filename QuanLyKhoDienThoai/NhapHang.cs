@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,7 @@ namespace QuanLyKhoDienThoai
     public partial class NhapHang : Form
     {
         DBConnection DbConn = new DBConnection();
+        DocSL soLuong = new DocSL();
 
         public NhapHang()
         {
@@ -103,6 +105,95 @@ namespace QuanLyKhoDienThoai
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private int UpdateSLSP()
+        {
+            try
+            {
+                string MaSPSelected = cboLoaiSP.SelectedValue.ToString();
+                int SLSPCu = soLuong.SLSP(MaSPSelected);
+                int SLSPMoi = Convert.ToInt32(txtSLSP.Text);
+
+                if (SLSPCu == -1)
+                {
+                    MessageBox.Show("Không lấy được số lượng sản phẩm trong kho!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+                else if (SLSPMoi < 0)
+                {
+                    MessageBox.Show("Số lượng sản phẩm phải lớn hơn hoặc bằng 0 !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+                else
+                {
+                    int SLSP = SLSPCu + SLSPMoi;
+                    string NgayCapNhat = DateTime.Now.ToString("hh:mm-dd/MM/yy");
+                    DbConn.GetConn();
+                    string query = $"UPDATE tbl_Products SET soluong = '{SLSP}', ngaycapnhat = '{NgayCapNhat}' WHERE masanpham = '{MaSPSelected}'";
+                    int check = DbConn.Command(query);
+                    if (check > 0)
+                    {
+                        DbConn.CloseConn();
+                        return 1;
+                    }
+                    DbConn.CloseConn();
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
+        private int UpdateSLSPSuaDN()
+        {
+            try
+            {
+                string MaSPSelected = cboLoaiSP.SelectedValue.ToString();
+                string MaDN = txtMaDN.Text;
+                int SLSPKho = soLuong.SLSP(MaSPSelected);
+                int SLSPtrongDN = soLuong.SLSPDN(MaDN);
+                int SLSPMoi = Convert.ToInt32(txtSLSP.Text);
+
+                if (SLSPKho == -1)
+                {
+                    MessageBox.Show("Không lấy được số lượng sản phẩm trong kho!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+                if (SLSPtrongDN == -1)
+                {
+                    MessageBox.Show("Không lấy được số lượng sản phẩm trong kho!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+                else if (SLSPMoi < 0)
+                {
+                    MessageBox.Show("Số lượng sản phẩm phải lớn hơn hoặc bằng 0 !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+                else
+                {
+                    int SLSP = SLSPKho - SLSPtrongDN + SLSPMoi;
+                    string NgayCapNhat = DateTime.Now.ToString("hh:mm-dd/MM/yy");
+                    DbConn.GetConn();
+                    string query = $"UPDATE tbl_Products SET soluong = '{SLSP}', ngaycapnhat = '{NgayCapNhat}' WHERE masanpham = '{MaSPSelected}'";
+                    int check = DbConn.Command(query);
+                    if (check > 0)
+                    {
+                        DbConn.CloseConn();
+                        return 1;
+                    }
+                    DbConn.CloseConn();
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
             }
         }
 
@@ -249,21 +340,29 @@ namespace QuanLyKhoDienThoai
                 }
                 if (KiemTraTrungMa(MaDN) == false)
                 {
-                    DbConn.GetConn();
-                    string query = $"INSERT INTO tbl_NhapHang (madonhang,tennhanvien,tennhacungcap,loaisanpham,soluongsanpham,ngaycapnhat)" +
-                                    $" VALUES (N'{MaDN}', N'{TenNV}', N'{TenNCC}', N'{LoaiSP}', N'{SLSP}', N'{NgayCapNhat}') ";
-                    int check = DbConn.Command(query);
-                    if (check > 0)
+                    int updateSLSP = UpdateSLSP();
+                    if (updateSLSP > 0)
                     {
-                        MessageBox.Show("Tạo đơn nhập hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DbConn.CloseConn();
-                        ResetTextBox();
-                        LoadList();
+                        DbConn.GetConn();
+                        string query = $"INSERT INTO tbl_NhapHang (madonhang,tennhanvien,tennhacungcap,loaisanpham,soluongsanpham,ngaycapnhat)" +
+                                        $" VALUES (N'{MaDN}', N'{TenNV}', N'{TenNCC}', N'{LoaiSP}', N'{SLSP}', N'{NgayCapNhat}') ";
+                        int check = DbConn.Command(query);
+                        if (check > 0)
+                        {
+                            MessageBox.Show("Tạo đơn nhập hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            DbConn.CloseConn();
+                            ResetTextBox();
+                            LoadList();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Tạo đơn nhập hàng KHÔNG thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            DbConn.CloseConn();
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Tạo đơn nhập hàng KHÔNG thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DbConn.CloseConn();
+                        MessageBox.Show("Sửa số lượng SP không thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 else
@@ -298,22 +397,30 @@ namespace QuanLyKhoDienThoai
                     DialogResult result = MessageBox.Show($"Bạn thật sự muốn sửa thông tin của đơn nhập có mã {MaDN}", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        DbConn.GetConn();
-                        string query = $"UPDATE tbl_NhapHang SET tennhanvien = N'{TenNV}', tennhacungcap = N'{TenNCC}'," +
-                                           $" loaisanpham = N'{LoaiSP}', soluongsanpham = N'{SLSP}'," +
-                                           $" ngaycapnhat = N'{NgayCapNhat}' WHERE madonhang = N'{MaDN}'";
-                        int check = DbConn.Command(query);
-                        if (check > 0)
+                        int updateSLSPSuaDN = UpdateSLSPSuaDN();
+                        if (updateSLSPSuaDN > 0)
                         {
-                            MessageBox.Show("Sửa đơn nhập hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            DbConn.CloseConn();
-                            ResetTextBox();
-                            LoadList();
+                            DbConn.GetConn();
+                            string query = $"UPDATE tbl_NhapHang SET tennhanvien = N'{TenNV}', tennhacungcap = N'{TenNCC}'," +
+                                               $" loaisanpham = N'{LoaiSP}', soluongsanpham = N'{SLSP}'," +
+                                               $" ngaycapnhat = N'{NgayCapNhat}' WHERE madonhang = N'{MaDN}'";
+                            int check = DbConn.Command(query);
+                            if (check > 0)
+                            {
+                                MessageBox.Show("Sửa đơn nhập hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                DbConn.CloseConn();
+                                ResetTextBox();
+                                LoadList();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Sửa đơn nhập hàng KHÔNG thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                DbConn.CloseConn();
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("Sửa đơn nhập hàng KHÔNG thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            DbConn.CloseConn();
+                            MessageBox.Show("Sửa số lượng SP không thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }

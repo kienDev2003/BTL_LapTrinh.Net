@@ -14,6 +14,7 @@ namespace QuanLyKhoDienThoai
     public partial class ThongKe : Form
     {
         DBConnection DbConn = new DBConnection();
+        DocSL soLuong = new DocSL();
 
         public ThongKe()
         {
@@ -181,8 +182,8 @@ namespace QuanLyKhoDienThoai
         private void ThongKe_Load(object sender, EventArgs e)
         {
             LoadList();
-            lbSLDN.Text = SLDN();
-            lbSLDX.Text = SLDX();
+            lbSLDN.Text = soLuong.SLDN();
+            lbSLDX.Text = soLuong.SLDX();
         }
 
         private void lsvDanhSach_SelectedIndexChanged(object sender, EventArgs e)
@@ -217,66 +218,5 @@ namespace QuanLyKhoDienThoai
             txtSLSP.Text = "";
         }
 
-        private string SLDX()
-        {
-            int sldx = 0;
-            try
-            {
-                DbConn.GetConn();
-                string query = "SELECT trangthai FROM tbl_ThongKe";
-                SqlDataReader reader = DbConn.Reader(query);
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        String trangthai = reader["trangthai"].ToString();
-                        if (trangthai == "Xuất Hàng")
-                        {
-                            sldx++;
-                        }
-                    }
-                    reader.Close();
-                }
-                reader.Close();
-                DbConn.CloseConn();
-                return sldx.ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return "Không đếm được đơn xuất!";
-            }
-        }
-
-        private string SLDN()
-        {
-            int sldn = 0;
-            try
-            {
-                DbConn.GetConn();
-                string query = "SELECT trangthai FROM tbl_ThongKe";
-                SqlDataReader reader = DbConn.Reader(query);
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        String trangthai = reader["trangthai"].ToString();
-                        if (trangthai == "Nhập Hàng")
-                        {
-                            sldn++;
-                        }
-                    }
-                    reader.Close();
-                }
-                reader.Close();
-                DbConn.CloseConn();
-                return sldn.ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return "Không đếm được đơn nhập!";
-            }
-        }
     }
 }
