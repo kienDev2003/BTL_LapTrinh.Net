@@ -16,7 +16,7 @@ namespace QuanLyKhoDienThoai
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+            Application.Run(new Home("1","Quản Lý"));
         }
     }
 }

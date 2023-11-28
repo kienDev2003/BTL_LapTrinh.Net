@@ -182,10 +182,12 @@ namespace QuanLyKhoDienThoai
             try
             {
                 DbConn.GetConn();
-                string query = @"SELECT tensanpham FROM tbl_Products";
+                string query = @"SELECT * FROM tbl_Products";
                 DataTable data = DbConn.DataTable(query);
+                data.Columns.Add("TenSP,MS,DL", typeof(string), "tensanpham + '-' + mausac + '-' + dungluong");
                 cboLoaiSP.DataSource = data;
-                cboLoaiSP.DisplayMember = "tensanpham";
+                cboLoaiSP.DisplayMember = "TenSP,MS,DL";
+                cboLoaiSP.ValueMember = "masanpham";
                 DbConn.CloseConn();
             }
             catch (Exception ex)

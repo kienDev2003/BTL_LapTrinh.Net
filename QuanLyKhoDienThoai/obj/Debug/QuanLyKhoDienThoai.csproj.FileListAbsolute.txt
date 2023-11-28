@@ -19,3 +19,24 @@ C:\Users\kienDev2003\Desktop\New folder\LapTrinh.Net\QuanLyKhoDienThoai\obj\Debu
 C:\Users\kienDev2003\Desktop\New folder\LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.csproj.CopyComplete
 C:\Users\kienDev2003\Desktop\New folder\LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.exe
 C:\Users\kienDev2003\Desktop\New folder\LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.pdb
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\build\QuanLyKhoDienThoai.exe.config
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\build\QuanLyKhoDienThoai.exe
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\build\QuanLyKhoDienThoai.pdb
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\build\System.Configuration.ConfigurationManager.dll
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\build\System.Configuration.ConfigurationManager.xml
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.csproj.AssemblyReference.cache
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.Home.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.Login.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.NhaCungCap.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.NhanVien.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.NhapHang.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.Properties.Resources.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.ResetPassword.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.SanPham.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.ThongKe.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.XuatHang.resources
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.csproj.GenerateResource.cache
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.csproj.CoreCompileInputs.cache
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.csproj.CopyComplete
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.exe
+E:\Project_Dev\BTL_LapTrinh.Net\QuanLyKhoDienThoai\obj\Debug\QuanLyKhoDienThoai.pdb

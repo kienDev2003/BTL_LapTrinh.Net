@@ -115,13 +115,16 @@ namespace QuanLyKhoDienThoai
                 btnSua.Enabled = false;
                 btnXoa.Enabled = false;
             }
-            DataTable dataCboLoaiSP = LoadDataToCbo("tensanpham", "tbl_Products");
+            DataTable dataCboLoaiSP = LoadDataToCbo("*", "tbl_Products");
+            dataCboLoaiSP.Columns.Add("TenSP,MS,DL", typeof(string), "tensanpham + '-' + mausac + '-' + dungluong");
+
             DataTable dataCboNhaCC = LoadDataToCbo("tennhacungcap", "tbl_NCC");
             DataTable dataCboTkTenNV = LoadDataToCbo("tennhanvien", "tbl_Accounts");
             DataTable dataCboTenNV = LoadDataToCbo("tennhanvien", "tbl_Accounts");
 
             cboLoaiSP.DataSource = dataCboLoaiSP;
-            cboLoaiSP.DisplayMember = "tensanpham";
+            cboLoaiSP.DisplayMember = "TenSP,MS,DL";
+            cboLoaiSP.ValueMember = "masanpham";
 
             cboTenNCC.DataSource = dataCboNhaCC;
             cboTenNCC.DisplayMember = "tennhacungcap";
@@ -131,11 +134,6 @@ namespace QuanLyKhoDienThoai
 
             cboTenNV.DataSource = dataCboTenNV;
             cboTenNV.DisplayMember = "tennhanvien";
-
-            cboTkTenNV.Text = "--Chọn Tên NV--";
-            cboTenNV.Text = "--Chọn Tên NV--";
-            cboTenNCC.Text = "--Chọn Tên NV--";
-            cboLoaiSP.Text = "--Chọn SP--";
 
             LoadList();
         }
