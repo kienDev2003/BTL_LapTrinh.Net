@@ -134,7 +134,6 @@ namespace QuanLyKhoDienThoai
                     {
                         MessageBox.Show("Tạo đơn nhập hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         DbConn.CloseConn();
-                        ResetTextBox();
                         LoadList();
                         return 1;
                     }
@@ -257,15 +256,16 @@ namespace QuanLyKhoDienThoai
             try
             {
                 string MaDH = txtMaDN.Text;
-                string TrangThai = "Xuất Hàng";
+                string TrangThai = "Nhập Hàng";
                 string TenNV = cboTenNV.Text;
+                string TenKh = "";
                 string TenSP = cboLoaiSP.Text;
-                string SLSP = txtSLSP.Text;
+                string SLSP =txtSLSP.Text;
                 string NgayCapNhat = DateTime.Now.ToString("hh:mm-dd/MM/yy");
 
                 DbConn.GetConn();
-                string query = $"INSERT INTO tbl_ThongKe (madonhang,trangthai,tennhanvien,tensanpham,soluong,ngaycapnhat)" +
-                               $" VALUES ('{MaDH}','{TrangThai}','{TenNV}','{TenSP}','{SLSP}','{NgayCapNhat}')";
+                string query = $"INSERT INTO tbl_ThongKe (madonhang,trangthai,tenkhachhang,tennhanvien,tensanpham,soluong,ngaycapnhat)" +
+                               $" VALUES (N'{MaDH}',N'{TrangThai}',N'{TenKh}',N'{TenNV}',N'{TenSP}',N'{SLSP}',N'{NgayCapNhat}')";
                 int check = DbConn.Command(query);
                 if (check > 0)
                 {
@@ -305,6 +305,7 @@ namespace QuanLyKhoDienThoai
                 if (check > 0)
                 {
                     DbConn.CloseConn();
+                    ResetTextBox();
                     return 1;
                 }
                 DbConn.CloseConn();
@@ -450,14 +451,6 @@ namespace QuanLyKhoDienThoai
                 if(check1 > 0)
                 {
                     int check2 = InsertThongKe();
-                    if(check2 > 0)
-                    {
-                        MessageBox.Show("Tạo đơn nhập thành công!");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Tạo đơn nhập KHÔNG thành công!");
-                    }
                 }
             }
             
