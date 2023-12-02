@@ -1,0 +1,42 @@
+#include <iostream>
+  2 #include <math.h>
+  3 #include <fstream>
+  4
+  5 using namespace std;
+  6
+  7 #define N 99
+  8
+  9 struct Queue
+ 10 {
+ 11     int F,R;
+ 12     int Q[N];
+ 13 };
+ 14
+ 15 void CQInsert(Queue &QFR, int x);
+ 16 int CQDelete(Queue &QFR);
+ 17 bool CQisEmty(Queue QFR);
+ 18
+ 19 int main()
+ 20 {
+ 21     cout<<"THCTDLGT Bai 10\n";
+ 22
+ 23     Queue QFR;
+ 24
+ 25     ifstream fin("daysonguyen.txt");
+ 26     ofstream fout("daysonguyen-kq.txt");
+ 27
+ 28     while(fin)
+ 29     {
+ 30         int x;
+ 31         fin>>x;
+ 32         if(x%2 == 0)
+ 33         {
+ 34             fout<<x<<"\t";
+ 35         }
+ 36         else
+ 37         {
+ 38             CQInsert(QFR,x);
+ 39         }
+ 40     }
+ 41
+ 42     fout<<endl;
