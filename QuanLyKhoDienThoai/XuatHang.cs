@@ -14,9 +14,80 @@ namespace QuanLyKhoDienThoai
     public partial class XuatHang : Form
     {
         DBConnection DbConn = new DBConnection();
+        DocSL ReadSLSP = new DocSL();
         public XuatHang()
         {
             InitializeComponent();
+        }
+
+        private bool KiemTraSLSPCoDuDeXuat()
+        {
+            string maSP = cboLoaiSP.SelectedValue.ToString();
+            int slspNew = Convert.ToInt32(txtSLSP.Text);
+            int slspCu = ReadSLSP.SLSP(maSP);
+
+            if (slspCu > slspNew) return true;
+            return false;
+        }
+
+        private void UpdateSLSP()
+        {
+
+        }
+
+        private int InsertXuatHang()
+        {
+            try
+            {
+                string MaDX = txtMaDX.Text.Trim();
+                string TenKH = txtTenKH.Text.Trim();
+                string LoaiSP = cboLoaiSP.Text.Trim();
+                string SĐT = txtSDT.Text.Trim();
+                string DiaChi = txtAddr.Text.Trim();
+                string SLSP = txtSLSP.Text.Trim();
+                string NgayCapNhat = DateTime.Now.ToString("hh:mm-dd/MM/yy");
+
+                if (MaDX == "" || TenKH == "" || LoaiSP == "" || SĐT == "" || DiaChi == "" || SLSP == "")
+                {
+                    MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return -1;
+                }
+                if (KiemTraTrungMa(MaDX) == false)
+                {
+                    DbConn.GetConn();
+                    string query = $"INSERT INTO tbl_DonXuat (madonhang,tenkhachhang,sodienthoai,diachi,soluongsanpham,loaisanpham,ngaycapnhat)" +
+                                    $" VALUES (N'{MaDX}', N'{TenKH}', N'{SĐT}', N'{DiaChi}', N'{SLSP}', N'{LoaiSP}', N'{NgayCapNhat}') ";
+                    int check = DbConn.Command(query);
+                    if (check > 0)
+                    {
+                        MessageBox.Show("Tạo đơn xuất hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DbConn.CloseConn();
+                        LoadList();
+                        return 1;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Tạo đơn xuất hàng KHÔNG thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DbConn.CloseConn();
+                        return-1;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Mã đơn xuất bị trùng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return-1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return -1;
+            }
+        }
+
+        private void InsertThongKe()
+        {
+
         }
 
         private void btnTimKiem_Click(object sender, EventArgs e)
@@ -264,47 +335,13 @@ namespace QuanLyKhoDienThoai
 
         private void btnXuatDon_Click(object sender, EventArgs e)
         {
-            try
+            if (KiemTraSLSPCoDuDeXuat())
             {
-                string MaDX = txtMaDX.Text.Trim();
-                string TenKH = txtTenKH.Text.Trim();
-                string LoaiSP = cboLoaiSP.Text.Trim();
-                string SĐT = txtSDT.Text.Trim();
-                string DiaChi = txtAddr.Text.Trim();
-                string SLSP = txtSLSP.Text.Trim();
-                string NgayCapNhat = DateTime.Now.ToString("hh:mm-dd/MM/yy");
-
-                if (MaDX == "" || TenKH == "" || LoaiSP == "" || SĐT == "" || DiaChi == "" || SLSP == "")
+                int check = InsertXuatHang();
+                if(check > 0)
                 {
-                    MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    InsertThongKe();
                 }
-                if (KiemTraTrungMa(MaDX) == false)
-                {
-                    DbConn.GetConn();
-                    string query = $"INSERT INTO tbl_DonXuat (madonhang,tenkhachhang,sodienthoai,diachi,soluongsanpham,loaisanpham,ngaycapnhat)" +
-                                    $" VALUES (N'{MaDX}', N'{TenKH}', N'{SĐT}', N'{DiaChi}', N'{SLSP}', N'{LoaiSP}', N'{NgayCapNhat}') ";
-                    int check = DbConn.Command(query);
-                    if (check > 0)
-                    {
-                        MessageBox.Show("Tạo đơn xuất hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DbConn.CloseConn();
-                        LoadList();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Tạo đơn xuất hàng KHÔNG thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DbConn.CloseConn();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Mã đơn xuất bị trùng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
